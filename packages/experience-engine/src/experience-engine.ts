@@ -20,6 +20,7 @@ import {
   now,
   objectKeys,
   objectMatches,
+  uuid,
 } from "./util";
 import { logger, messages } from "./logs";
 import { Session } from "./session";
@@ -39,10 +40,10 @@ export type ExperienceEngineContextOptions = {
   /** Are we running the preview Experience Engine Context */
   preview?: boolean;
   /**
-    * Not implemented - Keep everything in sessionStorage rather than localStorage,
-    * past sessions cannot be considered for counting previously matched
-    * signals and active audiences, only those matched in the current session
-    * */
+   * Not implemented - Keep everything in sessionStorage rather than localStorage,
+   * past sessions cannot be considered for counting previously matched
+   * signals and active audiences, only those matched in the current session
+   * */
   session?: true;
 };
 
@@ -183,7 +184,7 @@ export class ExperienceEngineContext {
     return (
       this.#store.get<IExperienceEngineStore>() /** generate an experience engine uuid and a percentile for random bucketing */ || {
         /** New visitor uuid */
-        cxpid: this.cxpid || crypto.randomUUID(),
+        cxpid: this.cxpid ?? uuid(),
         /** New percentile random bucketing to 2 dp */
         pc: existingpc ? existingpc * 100 : Math.floor(Math.random() * 10000),
         pageViews: 0,

@@ -20,21 +20,21 @@ export const flattenObject = <T extends object>(
   prefix?: string
 ) =>
   objectKeys(obj).reduce((acc, k) => {
-    const pre = prefix?.length ? `${prefix}.` : "";
-    const value = obj[k as keyof T];
+      const pre = prefix?.length ? `${prefix}.` : "";
+      const value = obj[k as keyof T];
 
-    if (isArray(value)) {
-      // Preserve arrays as-is
-      acc[pre + k] = value;
-    } else if (isObject(value) && objectKeys(value || {}).length > 0) {
-      // Continue flattening nested objects
-      Object.assign(acc, flattenObject(value as T, pre + k));
-    } else {
-      // Assign primitive values directly
-      acc[pre + k] = value;
-    }
+      if (isArray(value)) {
+        // Preserve arrays as-is
+        acc[pre + k] = value;
+      } else if (isObject(value) && objectKeys(value || {}).length > 0) {
+        // Continue flattening nested objects
+        Object.assign(acc, flattenObject(value as T, pre + k));
+      } else {
+        // Assign primitive values directly
+        acc[pre + k] = value;
+      }
 
-    return acc;
+      return acc;
   }, {} as Record<string, unknown>);
 
 /**
@@ -159,3 +159,8 @@ export const isQuotaExceededError = (err: unknown) => {
       err.name === "NS_ERROR_DOM_QUOTA_REACHED")
   );
 };
+
+export const uuid = (): string =>
+  crypto.randomUUID?.() ??
+  "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16));
