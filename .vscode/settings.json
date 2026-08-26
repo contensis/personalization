@@ -19,5 +19,6 @@
     "statusBarItem.hoverBackground": "#083119",
     "statusBar.foreground": "#ccf5ff",
     "statusBar.border": "#3BE081"
-  }
+  },
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }
